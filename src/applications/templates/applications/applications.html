@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications{% endblock %}
+
+{% block nav %}
+<ul class="navbar-nav mr-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+  </li>
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'applications' %}"> Application <span class="sr-only">(current)</span></a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="jumbotron">
+
+    <h3 class="text-center mb-4">Applications history</h3>
+
+    <ul class="list-group">
+      <li class="list-group-item bg-primary text-white">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm text-center font-weight-bold">
+              Start Date
+            </div>
+            <div class="col-sm text-center font-weight-bold">
+              End Date
+            </div>
+            <div class="col-sm text-center font-weight-bold">
+              Status
+            </div>
+          </div>
+        </div>
+      </li>
+      {% for r in req %}
+      <li class="list-group-item">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm text-center">
+              {{ r.start_date }}
+            </div>
+            <div class="col-sm text-center">
+              {{ r.end_date }}
+            </div>
+            {% if r.status == 'Pending' %}
+            <div class="col-sm text-center text-warning">{{ r.status }}</div>
+            {% endif %}
+            {% if r.status == 'Approved' %}
+            <div class="col text-center text-success">{{ r.status }}</div>
+            {% endif %}
+            {% if r.status == 'Declined' %}
+            <div class="col text-center text-danger">{{ r.status }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <p class="text-center mt-4"><a href="{% url 'leave_request' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">New Application</a><p>
+    </div>
+  </div>
+  {% endblock %}

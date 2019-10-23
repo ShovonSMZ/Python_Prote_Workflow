@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Change_Userinfo{% endblock %}
+
+{% block content %}
+
+<style type="text/css">
+
+div.d-flex {
+  max-width: 500px;
+  margin-bottom: 15px;
+  
+}
+</style>
+
+<div class="row centered-form">
+  <div class="col-md-4 container">
+    <div class="jumbotron">
+      <h2 class="text-center">Edit User Information</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% for error in form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+        {% endfor %}
+        {% for field in form %}
+          {{ field | as_crispy_field }}
+        {% endfor %}
+        
+        <div class = d-flex flex-column>
+          <a href="{%url 'password_change'%}">Reset Password</a>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block"  type="submit">Confirm Change</button>  
+       
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

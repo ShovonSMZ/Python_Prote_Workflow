@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row centered-form">
+  <div class="col-md-4 container">
+    <div class="jumbotron">
+      <h2 class="text-center">Log in</h2>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% for error in form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+        {% endfor %}
+        {% for field in form %}
+          {{ field | as_crispy_field }}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Log in</button><br>
+      </form>
+      <p class="mt-2"><a href="{% url 'signup' %}">Don't have an account? Sign up</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

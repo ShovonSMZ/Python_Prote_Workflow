@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications{% endblock %}
+{% block css %}
+.text-wrap {
+  word-wrap: break-word;
+  overflow: auto;
+}
+{% endblock %}
+
+{% block nav %}
+<ul class="navbar-nav mr-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+  </li>
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'applications' %}"> Application <span class="sr-only">(current)</span></a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+    <h3 class="text-center mb-4">Applications</h3>
+
+    <ul class="list-group">
+      <li class="list-group-item bg-primary text-white">
+        <div class="container">
+          <div class="row">
+            <div class="col font-weight-bold"> Applicant</div>
+            <div class="col font-weight-bold"> Start Date </div>
+            <div class="col font-weight-bold"> End Date </div>
+            <div class="col-md-4 text-wrap font-weight-bold"> Reason </div>
+            <div class="col-md-2 text-center font-weight-bold"> Action </div>
+          </div>
+        </div>
+      </li>
+      {% for r in req %}
+      <li class="list-group-item">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              {{ r.user.get_full_name }}
+            </div>
+            <div class="col">
+              {{ r.start_date }}
+            </div>
+            <div class="col">
+              {{ r.end_date }}
+            </div>
+            <div class="col-md-4 text-wrap">
+              {{ r.reason }}
+            </div>
+            <div class="col-md-2">
+              <div class="row">
+                {% if r.status == 'Pending' %}
+                <a href="{% url 'approve_request' pk=r.id %}" class="col btn btn-success btn-sm active mr-2">Approve</a>
+                <a href="{% url 'decline_request' pk=r.id %}" class="col btn btn-danger btn-sm active ml-2">Decline</a>
+                {% endif %}
+                {% if r.status == 'Approved' %}
+                <div class="col text-center text-success">{{ r.status }}</div>
+                {% endif %}
+                {% if r.status == 'Declined' %}
+                <div class="col text-center text-danger">{{ r.status }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

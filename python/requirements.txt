@@ -1,0 +1,5 @@
+Django>=2.2,<2.3
+uwsgi>=2.0.17,<2.1
+psycopg2>=2.7,<3.0 --no-binary psycopg2
+django-crispy-forms
+faker

@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11-alpine
+    restart: always
+    expose:
+      - 5432
+    volumes:
+      - postgres:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: abc123
+
+  python:
+    build: ./python
+    command: uwsgi --socket :8001 --module app.wsgi --py-autoreload 1 --logto /tmp/mylog.log
+    restart: always
+    volumes:
+      - ./src:/src
+      - ./static:/static
+    expose:
+      - "8001"
+    depends_on:
+      - db
+    links:
+      - db
+
+  nginx:
+    image: nginx:1.17
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
+      - ./static:/static
+    depends_on:
+      - python
+
+volumes:
+  postgres:
+    external: true
